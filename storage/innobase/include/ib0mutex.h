@@ -444,7 +444,7 @@ struct TTASEventMutex {
 		uint32_t	n_waits = 0;
 		const uint32_t	step = max_spins;
 
-		while (!try_lock()) {
+		while (!(state() == MUTEX_STATE_UNLOCKED && try_lock())) {
 			if (n_spins++ == max_spins) {
 				max_spins += step;
 				n_waits++;
